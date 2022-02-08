@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        @import url('http://fonts.cdnfonts.com/css/gotham-black');
+        @import url('http://fonts.cdnfonts.com/css/gotham');
+
+        html, body {
+            background-color: lightgrey;
+        }
+        #card-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-51%, -51%);
+            height: 50rem;
+            width: 40rem;
+            background-color: white;
+            border-radius: 2rem;
+            box-shadow: 2rem 2rem 0px rgba(0, 0, 0, 0.308);
+        }
+        #question-title {
+            position: absolute;
+            left: 2rem;
+            top: .5rem;
+            font-family: 'Gotham Black', sans-serif;
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 200;
+        }
+        #question-text {
+            position: absolute;
+            left: 2rem;
+            top: 8rem;
+            font-family: 'Gotham', sans-serif;
+            color: rgba(0, 0, 0, 0.85);
+        }
+        #question-response {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 0);
+            top: 16rem;
+            height: 3rem;
+            width: 75%;
+            border: 2px solid gray;
+            border-radius: 5px;
+            padding: 2px 20px 2px 20px;
+            font-size: 17px;
+        }
+        #question-response:focus-within {
+            outline: 4px solid rgba(0, 119, 255, 0.5);
+        }
+        .notfinished {
+            outline: 4px solid rgba(255, 0, 0, 0.5);
+        }
+        #continue {
+            all: unset;
+            position: absolute;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            padding: .5rem .5rem;
+            font-size: 1.2rem;
+            background-color: lightgrey;
+            border-radius: .5rem;
+            border: 2px solid gray;
+            cursor: pointer;
+            transition: .3s linear;
+        }
+    </style>
+    <div id="card-center">
+        <h2 id='question-title'>QUESTION #1</h2>
+        <h1 id='question-text'>Loading...</h1>
+        <input type="text" name="Response" id="question-response">
+        <button id='continue' onclick='loadNewQuestion(true)'>Continue</button>
+    </div>
+
+    <script>
+        let questions = []
+        const response = document.getElementById('question-response');
+        let currentQuestion = 0
+
+        response.onmousedown = () => {
+            response.classList.remove('notfinished');
+        }
+        
+        async function loadNewQuestion(runValueCheck) {
+            if (response.value == '' && runValueCheck) {
+                response.classList.add('notfinished');
+                return;
+            }
+
+            response.value = '';
+            currentQuestion++
+            document.getElementById('question-title').innerText = `QUESTION #${currentQuestion}`
+            document.getElementById('question-text').innerText = questions[Math.floor(Math.random() * questions.length)];
+        }
+
+        fetch('questions.json').then((response) => {
+            response.text().then((responseText) => {
+                questions = JSON.parse(responseText);
+                loadNewQuestion(false);
+            })
+        });
+        
+    </script>
+</body>
+</html>
