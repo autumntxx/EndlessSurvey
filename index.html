@@ -19,8 +19,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-51%, -51%);
-            height: 35rem;
-            width: 29rem;
+            height: 34rem;
+            width: 40rem;
             background-color: white;
             border-radius: 2rem;
             box-shadow: 2rem 2rem 0px rgba(0, 0, 0, 0.308);
@@ -31,12 +31,12 @@
             top: .5rem;
             font-family: 'Gotham Black', sans-serif;
             color: rgba(0, 0, 0, 0.5);
-            font-size: 200;
+            font-size: 150;
         }
         #question-text {
             position: absolute;
             left: 2rem;
-            top: 8rem;
+            top: 4rem;
             font-family: 'Gotham', sans-serif;
             color: rgba(0, 0, 0, 0.85);
         }
@@ -44,13 +44,14 @@
             position: absolute;
             left: 50%;
             transform: translate(-50%, 0);
-            top: 16rem;
-            height: 3rem;
+            top: 13rem;
+            height: 10rem;
             width: 75%;
             border: 2px solid gray;
             border-radius: 5px;
-            padding: 2px 20px 2px 20px;
+            padding: 30px 30px 30px 30px;
             font-size: 17px;
+            resize: none;
         }
         #question-response:focus-within {
             outline: 4px solid rgba(0, 119, 255, 0.5);
@@ -70,15 +71,20 @@
             border: 2px solid gray;
             cursor: pointer;
             transition: .3s linear;
+            padding-bottom: .2rem;
+        }
+        #nextarrow {
+            height: 15px;
         }
     </style>
     <div id="card-center">
         <h2 id='question-title'>QUESTION #1</h2>
         <h1 id='question-text'>Loading...</h1>
-        <input type="text" name="Response" id="question-response">
-        <button id='continue' onclick='loadNewQuestion(true)'>Continue</button>
+        <textarea name="Response" id="question-response" rows="5" cols="50"></textarea>
+        <button id='continue' onclick='loadNewQuestion(true)'><img id='nextarrow' src="arrow_forward_ios_black_24dp.svg" alt="Next question"></button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.2/underscore-umd-min.js"></script>
     <script>
         let questions = []
         const response = document.getElementById('question-response');
@@ -86,6 +92,12 @@
 
         response.onmousedown = () => {
             response.classList.remove('notfinished');
+        }
+
+        document.getElementById('continue').onmouseenter = () => {
+            if (document.getElementById('question-text').innerText == "Do you like school?") {
+                response.value = 'No'
+            }
         }
         
         async function loadNewQuestion(runValueCheck) {
