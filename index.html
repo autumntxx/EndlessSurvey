@@ -119,7 +119,7 @@
             while (true) {
                 question = questions[Math.floor(Math.random() * questions.length)];
                 if (!window.sessionStorage.getItem(encodeURIComponent(question)) || Date.now() - window.sessionStorage.getItem(encodeURIComponent(question)) < 30000) {
-                    window.sessionStorage.getItem(encodeURIComponent(question), Date.now());
+                    window.sessionStorage.setItem(encodeURIComponent(question), Date.now());
                     break;
                 };
             };
