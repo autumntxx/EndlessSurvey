@@ -114,8 +114,16 @@
 
             response.value = '';
             currentQuestion++
-            document.getElementById('question-title').innerText = `QUESTION #${currentQuestion}`
-            document.getElementById('question-text').innerText = questions[Math.floor(Math.random() * questions.length)];
+            document.getElementById('question-title').innerText = `QUESTION #${currentQuestion}`;
+            let question;
+            while (true) {
+                question = questions[Math.floor(Math.random() * questions.length)];
+                if (window.sessionStorage.getItem(encodeURIComponent(question)) && Date.now() - window.sessionStorage.getItem(encodeURIComponent(question)) < 30000) {
+                    window.sessionStorage.getItem(encodeURIComponent(question), Date.now());
+                    break;
+                };
+            };
+            document.getElementById('question-text').innerText = question;
         }
 
         fetch('questions.json').then((response) => {
